@@ -11,13 +11,18 @@ def crop():
 def point_pixels():
     mod_img = img_rgb
     # x coordinate range start: end,y coordinates range start: end
+    right_corr_x_m = np.amax(loc_r[0])
+    right_corr_y_m = np.amax(loc_r[1])
+    mod_img[right_corr_x_m + wr:right_corr_x_m + 20 + wr, right_corr_y_m + wr:right_corr_y_m + 20 + wr] = [0, 0, 255]
+    right_corr_x = np.amin(loc_r[0])
+    right_corr_y = np.amin(loc_r[1])
+    mod_img[right_corr_x:right_corr_x + 20, right_corr_y:right_corr_y + 20] = [0, 255, 0]
     left_corr_x_m = np.amax(loc_l[0])
     left_corr_y_m = np.amax(loc_l[1])
-    mod_img[left_corr_x_m:left_corr_x_m+20, left_corr_y_m:left_corr_y_m+20] = [0, 0, 255]
+    mod_img[left_corr_x_m + hl:left_corr_x_m + 20 + hl, left_corr_y_m + hl:left_corr_y_m + 20 + hl] = [0, 0, 255]
     left_corr_x = np.amin(loc_l[0])
     left_corr_y = np.amin(loc_l[1])
     mod_img[left_corr_x:left_corr_x + 20, left_corr_y:left_corr_y + 20] = [0, 255, 0]
-    mod_img[loc_r[0][0]:loc_r[0][0] + 10,loc_r[-1][0]:loc_r[-1][0] + 10] = [0, 0, 255]
     cv.imwrite('red_region.png', mod_img)
 
 
@@ -32,7 +37,7 @@ def make_rect():
 
 
 def verbose():
-    print(loc_l, '\n\n\n', loc_r)
+    print('\n', loc_l, '\n\n', loc_r)
     print(loc_l[0][0], '\n', loc_r[0][0], '\n', hi, '\n', hi)
 
 
@@ -50,5 +55,5 @@ threshold = 0.8
 loc_l = np.where(resl >= threshold)
 loc_r = np.where(resr >= threshold)
 
-verbose()
+#verbose()
 point_pixels()
